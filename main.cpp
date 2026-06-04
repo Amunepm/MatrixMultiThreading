@@ -14,7 +14,6 @@ using namespace std;
 using Matrix = vector<vector<int>>;
 
 void runBenchmark();
-void warmUp();
 Matrix generateMatrix(int size, int seed);
 Matrix multiplySingleThread(const Matrix& A, const Matrix& B);
 Matrix multiplyWithThreads(const Matrix& A, const Matrix& B, int requestedThreadCount, int& usedThreadCount);
@@ -37,7 +36,7 @@ void runBenchmark() {
     vector<int> matrixSizes = {300, 500, 700};
     unsigned int hardwareThreads = thread::hardware_concurrency();
 
-    cout << "Daugiagijis matricu daugybos testavimas C++ kalba" << endl;
+    cout << "Daugiagijis matricu daugybos testavimas" << endl;
     cout << "===================================================" << endl;
     cout << "CPU loginiu branduoliu skaicius: ";
 
@@ -46,8 +45,6 @@ void runBenchmark() {
     } else {
         cout << hardwareThreads << endl;
     }
-
-    warmUp();
 
     for (int matrixSize : matrixSizes) {
         cout << endl;
@@ -84,23 +81,13 @@ void runBenchmark() {
             double speedup = singleThreadTime / threadedTime;
             long long checksum = calculateChecksum(threadedResult);
 
-            printBenchmarkRow("std::thread", usedThreadCount, threadedTime, isCorrect ? "Teisingas" : "Neteisingas",
+            printBenchmarkRow("thread", usedThreadCount, threadedTime, isCorrect ? "Teisingas" : "Neteisingas",
                               speedup, checksum);
         }
     }
 
     cout << endl;
     cout << "Testavimas baigtas." << endl;
-}
-
-void warmUp() {
-    Matrix A = generateMatrix(50, 1);
-    Matrix B = generateMatrix(50, 2);
-
-    multiplySingleThread(A, B);
-
-    int usedThreadCount = 0;
-    multiplyWithThreads(A, B, 2, usedThreadCount);
 }
 
 Matrix generateMatrix(int size, int seed) {
