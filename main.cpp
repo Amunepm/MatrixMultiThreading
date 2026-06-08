@@ -84,9 +84,6 @@ void runBenchmark() {
                               speedup, checksum);
         }
     }
-
-    cout << endl;
-    cout << "Testavimas baigtas." << endl;
 }
 
 Matrix generateMatrix(int size, int seed) {
