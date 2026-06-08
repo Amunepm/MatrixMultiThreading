@@ -36,12 +36,11 @@ void runBenchmark() {
     vector<int> matrixSizes = {300, 500, 700};
     unsigned int hardwareThreads = thread::hardware_concurrency();
 
-    cout << "Daugiagijis matricu daugybos testavimas" << endl;
-    cout << "===================================================" << endl;
+    cout << endl;
     cout << "CPU loginiu branduoliu skaicius: ";
 
     if (hardwareThreads == 0) {
-        cout << "nepavyko nustatyti" << endl;
+        cout << "Nepavyko nustatyti." << endl;
     } else {
         cout << hardwareThreads << endl;
     }
@@ -111,16 +110,15 @@ Matrix multiplySingleThread(const Matrix& A, const Matrix& B) {
 }
 
 Matrix multiplyWithThreads(const Matrix& A, const Matrix& B, int requestedThreadCount, int& usedThreadCount) {
-    int rowCount = static_cast<int>(A.size());
-    Matrix result(rowCount, vector<int>(B[0].size(), 0));
+    Matrix result(A.size(), vector<int>(B[0].size(), 0));
 
-    usedThreadCount = min(max(1, requestedThreadCount), rowCount);
+    usedThreadCount = min(max(1, requestedThreadCount), static_cast<int>(A.size()));
 
     vector<thread> threads;
     threads.reserve(usedThreadCount);
 
-    int baseRowsPerThread = rowCount / usedThreadCount;
-    int extraRows = rowCount % usedThreadCount;
+    int baseRowsPerThread = static_cast<int>(A.size()) / usedThreadCount;
+    int extraRows = static_cast<int>(A.size()) % usedThreadCount;
     int startRow = 0;
 
     for (int i = 0; i < usedThreadCount; i++) {
