@@ -21,7 +21,6 @@ void computeRows(const Matrix& A, const Matrix& B, Matrix& C, int startRow, int 
 double measureMilliseconds(const function<void()>& operation);
 bool areMatricesEqual(const Matrix& A, const Matrix& B);
 long long calculateChecksum(const Matrix& M);
-string getMatrixSample(const Matrix& M);
 vector<int> getThreadCounts(int matrixSize);
 void printBenchmarkHeader();
 void printBenchmarkRow(const string& methodName, int threadCount, double elapsedMs, const string& resultText,
@@ -60,8 +59,6 @@ void runBenchmark() {
 
         long long singleThreadChecksum = calculateChecksum(singleThreadResult);
 
-        cout << "Atsakymo pavyzdys pagal viengiji metoda:" << endl;
-        cout << getMatrixSample(singleThreadResult) << endl;
         cout << "Kontroline suma: " << singleThreadChecksum << endl;
         cout << endl;
 
@@ -190,25 +187,13 @@ bool areMatricesEqual(const Matrix& A, const Matrix& B) {
 long long calculateChecksum(const Matrix& M) {
     long long sum = 0;
 
-    for (const vector<int>& row : M) {
-        for (int value : row) {
-            sum += value;
+    for (size_t row = 0; row < M.size(); row++) {
+        for (size_t column = 0; column < M[row].size(); column++) {
+            sum += M[row][column];
         }
     }
 
     return sum;
-}
-
-string getMatrixSample(const Matrix& M) {
-    int size = static_cast<int>(M.size());
-    int middle = size / 2;
-
-    stringstream ss;
-    ss << "[0,0]=" << M[0][0]
-       << ", [" << middle << "," << middle << "]=" << M[middle][middle]
-       << ", [" << size - 1 << "," << size - 1 << "]=" << M[size - 1][size - 1];
-
-    return ss.str();
 }
 
 vector<int> getThreadCounts(int matrixSize) {
