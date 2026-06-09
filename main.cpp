@@ -197,7 +197,7 @@ long long calculateChecksum(const Matrix& M) {
 }
 
 vector<int> getThreadCounts(int matrixSize) {
-    vector<int> threadCounts = {2, 4};
+    vector<int> threadCounts = {2, 3, 4};
     unsigned int hardwareThreads = thread::hardware_concurrency();
 
     if (hardwareThreads > 0) {
